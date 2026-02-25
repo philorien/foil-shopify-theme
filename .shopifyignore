@@ -1,0 +1,17 @@
+node_modules/
+src/
+package.json
+package-lock.json
+vite.config.js
+tailwind.config.js
+postcss.config.js
+.env
+.env.*
+.git/
+.gitignore
+.shopifyignore
+.cursor/
+.cursorrules
+.claude/
+CLAUDE.MD
+assets/.vite/

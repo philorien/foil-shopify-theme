@@ -1,0 +1,124 @@
+{
+  "general": {
+    "skip_to_content": "Skip to content",
+    "search": "Search",
+    "cart": "Cart",
+    "menu": "Menu",
+    "close": "Close",
+    "loading": "Loading",
+    "share": "Share",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {{ number }}"
+    }
+  },
+  "products": {
+    "add_to_cart": "Add to cart",
+    "sold_out": "Sold out",
+    "unavailable": "Unavailable",
+    "quantity": "Quantity",
+    "price": "Price",
+    "compare_at": "Compare at",
+    "sale": "Sale",
+    "low_stock": "Only {{ count }} left",
+    "notify_me": "Notify when available",
+    "vendor": "Vendor",
+    "type": "Type",
+    "sku": "SKU",
+    "variant": "Variant"
+  },
+  "conditions": {
+    "nm": "Near Mint",
+    "lp": "Lightly Played",
+    "mp": "Moderately Played",
+    "hp": "Heavily Played",
+    "dmg": "Damaged",
+    "nm_abbr": "NM",
+    "lp_abbr": "LP",
+    "mp_abbr": "MP",
+    "hp_abbr": "HP",
+    "dmg_abbr": "D",
+    "nm_desc": "Card is in perfect or near-perfect condition. No visible wear, bends, or scratches.",
+    "lp_desc": "Card shows minor wear such as light scratches, slight whitening on edges, or minor corner wear.",
+    "mp_desc": "Card shows moderate wear including noticeable scratches, edge whitening, or minor creasing.",
+    "hp_desc": "Card shows heavy wear such as significant scratches, creases, edge damage, or discoloration.",
+    "dmg_desc": "Card has significant damage including heavy creases, tears, water damage, or missing pieces.",
+    "guide_title": "Condition guide"
+  },
+  "cart": {
+    "title": "Your cart",
+    "empty": "Your cart is empty",
+    "subtotal": "Subtotal",
+    "checkout": "Checkout",
+    "continue_shopping": "Continue shopping",
+    "taxes_note": "Taxes and shipping calculated at checkout",
+    "remove": "Remove",
+    "update": "Update"
+  },
+  "collections": {
+    "title": "Collections",
+    "no_results": "No products found",
+    "no_results_hint": "Try adjusting your filters or search terms",
+    "sort_by": "Sort by",
+    "sort_options": {
+      "manual": "Featured",
+      "best_selling": "Best selling",
+      "title_asc": "Alphabetically, A-Z",
+      "title_desc": "Alphabetically, Z-A",
+      "price_asc": "Price, low to high",
+      "price_desc": "Price, high to low",
+      "created_asc": "Date, old to new",
+      "created_desc": "Date, new to old"
+    },
+    "filter": "Filter",
+    "clear_filters": "Clear all",
+    "results_count": "{{ count }} products",
+    "load_more": "Load more",
+    "grid_view": "Grid view",
+    "list_view": "List view"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search cards, sets, products...",
+    "no_results": "No results for \"{{ terms }}\"",
+    "no_results_hint": "Check the spelling or try a different search term",
+    "products": "Products",
+    "collections": "Collections",
+    "pages": "Pages",
+    "results_count": "{{ count }} results for \"{{ terms }}\""
+  },
+  "accessibility": {
+    "skip_to_content": "Skip to content",
+    "close_modal": "Close",
+    "open_cart": "Open cart drawer",
+    "close_cart": "Close cart drawer",
+    "open_search": "Open search",
+    "close_search": "Close search",
+    "open_menu": "Open menu",
+    "close_menu": "Close menu",
+    "dark_mode_toggle": "Toggle dark mode",
+    "increase_quantity": "Increase quantity for {{ title }}",
+    "decrease_quantity": "Decrease quantity for {{ title }}",
+    "remove_item": "Remove {{ title }} from cart"
+  },
+  "buylist": {
+    "hero_title": "We buy your cards",
+    "hero_subtitle": "Turn your collection into cash",
+    "form_name": "Your name",
+    "form_email": "Email address",
+    "form_description": "Describe your cards",
+    "form_condition": "Overall condition",
+    "form_submit": "Submit buylist",
+    "form_success": "Thank you! We'll review your submission and get back to you.",
+    "policy_title": "Buylist pricing policy"
+  },
+  "password": {
+    "title": "Opening soon",
+    "subtext": "We're getting things ready. Enter your email to be notified when we launch.",
+    "email_placeholder": "Your email",
+    "submit": "Notify me",
+    "password_label": "Enter store using password",
+    "enter": "Enter"
+  }
+}

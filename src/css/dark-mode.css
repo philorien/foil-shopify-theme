@@ -1,0 +1,10 @@
+/* Light mode overrides.
+   Dark mode values are the :root defaults set in theme.liquid.
+   Switching data-theme="light" on <html> activates these overrides. */
+
+[data-theme="light"] {
+  --color-background: #ffffff;
+  --color-surface: #f8fafc;
+  --color-text: #0f172a;
+  --color-border: #e2e8f0;
+}

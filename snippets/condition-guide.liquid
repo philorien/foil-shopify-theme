@@ -1,0 +1,31 @@
+{%- comment -%}
+  Condition guide snippet — placeholder.
+  Renders a reference table of TCG card conditions.
+  Usage: {% render 'condition-guide' %}
+{%- endcomment -%}
+
+<div class="space-y-3">
+  <h3 class="text-lg font-heading font-bold text-text">{{ 'conditions.guide_title' | t }}</h3>
+  <dl class="space-y-2">
+    <div class="flex gap-3">
+      <dt class="flex-shrink-0 w-8 text-sm font-bold text-success">{{ 'conditions.nm_abbr' | t }}</dt>
+      <dd class="text-sm text-text/70">{{ 'conditions.nm_desc' | t }}</dd>
+    </div>
+    <div class="flex gap-3">
+      <dt class="flex-shrink-0 w-8 text-sm font-bold text-primary">{{ 'conditions.lp_abbr' | t }}</dt>
+      <dd class="text-sm text-text/70">{{ 'conditions.lp_desc' | t }}</dd>
+    </div>
+    <div class="flex gap-3">
+      <dt class="flex-shrink-0 w-8 text-sm font-bold text-accent">{{ 'conditions.mp_abbr' | t }}</dt>
+      <dd class="text-sm text-text/70">{{ 'conditions.mp_desc' | t }}</dd>
+    </div>
+    <div class="flex gap-3">
+      <dt class="flex-shrink-0 w-8 text-sm font-bold text-error">{{ 'conditions.hp_abbr' | t }}</dt>
+      <dd class="text-sm text-text/70">{{ 'conditions.hp_desc' | t }}</dd>
+    </div>
+    <div class="flex gap-3">
+      <dt class="flex-shrink-0 w-8 text-sm font-bold text-error">{{ 'conditions.dmg_abbr' | t }}</dt>
+      <dd class="text-sm text-text/70">{{ 'conditions.dmg_desc' | t }}</dd>
+    </div>
+  </dl>
+</div>

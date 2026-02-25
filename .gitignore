@@ -1,0 +1,20 @@
+node_modules/
+.env
+.env.*
+!.env.example
+
+# Vite build artifacts in assets/ (static assets like images are NOT ignored)
+assets/*.css
+assets/*.js
+assets/*.js.map
+assets/.vite/
+
+# Shopify CLI
+.shopify/
+
+# OS
+.DS_Store
+
+# Editor
+.cursor/
+.cursorrules

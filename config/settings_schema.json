@@ -1,0 +1,359 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Foil",
+    "theme_version": "0.1.0",
+    "theme_author": "Foil Theme",
+    "theme_documentation_url": "",
+    "theme_support_url": ""
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Primary colors"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primary",
+        "default": "#6366f1"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "label": "Secondary",
+        "default": "#8b5cf6"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent",
+        "default": "#f59e0b"
+      },
+      {
+        "type": "header",
+        "content": "Surface colors"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Background",
+        "default": "#0f172a"
+      },
+      {
+        "type": "color",
+        "id": "color_surface",
+        "label": "Surface",
+        "default": "#1e293b"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text",
+        "default": "#f1f5f9"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Border",
+        "default": "#334155"
+      },
+      {
+        "type": "header",
+        "content": "Feedback colors"
+      },
+      {
+        "type": "color",
+        "id": "color_error",
+        "label": "Error",
+        "default": "#ef4444"
+      },
+      {
+        "type": "color",
+        "id": "color_success",
+        "label": "Success",
+        "default": "#22c55e"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "label": "Heading font",
+        "default": "assistant_n7"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body font",
+        "default": "assistant_n4"
+      },
+      {
+        "type": "range",
+        "id": "font_size_base",
+        "label": "Base font size",
+        "min": 14,
+        "max": 20,
+        "step": 1,
+        "unit": "px",
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "heading_scale",
+        "label": "Heading size scale",
+        "info": "Multiplier applied to heading sizes",
+        "min": 100,
+        "max": 160,
+        "step": 5,
+        "default": 125
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "range",
+        "id": "max_content_width",
+        "label": "Max content width",
+        "min": 960,
+        "max": 1600,
+        "step": 40,
+        "unit": "px",
+        "default": 1280
+      },
+      {
+        "type": "range",
+        "id": "section_spacing",
+        "label": "Section vertical spacing",
+        "min": 16,
+        "max": 80,
+        "step": 4,
+        "unit": "px",
+        "default": 40
+      },
+      {
+        "type": "range",
+        "id": "border_radius_base",
+        "label": "Border radius",
+        "min": 0,
+        "max": 16,
+        "step": 2,
+        "unit": "px",
+        "default": 8
+      }
+    ]
+  },
+  {
+    "name": "Product cards",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_condition_badge",
+        "label": "Show condition badge",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_set_badge",
+        "label": "Show set badge",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_rarity_indicator",
+        "label": "Show rarity indicator",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_foil_shimmer",
+        "label": "Enable foil shimmer effect",
+        "info": "Adds a subtle holographic shimmer to foil product cards",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "low_stock_threshold",
+        "label": "Low stock threshold",
+        "info": "Show 'Only X left' when inventory is at or below this number. Set to 0 to disable.",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 3
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart type",
+        "options": [
+          { "value": "drawer", "label": "Drawer" }
+        ],
+        "default": "drawer"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_cart_upsell",
+        "label": "Enable cart upsell slot",
+        "info": "Show a featured product in the cart drawer",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Search",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_predictive_search",
+        "label": "Enable predictive search",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "search_show_collections",
+        "label": "Show collection results",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "search_show_pages",
+        "label": "Show page results",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Dark mode",
+    "settings": [
+      {
+        "type": "select",
+        "id": "dark_mode_default",
+        "label": "Default color mode",
+        "options": [
+          { "value": "dark", "label": "Dark" },
+          { "value": "light", "label": "Light" }
+        ],
+        "default": "dark"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_dark_mode_toggle",
+        "label": "Allow visitors to toggle dark/light mode",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "TCG settings",
+    "settings": [
+      {
+        "type": "select",
+        "id": "default_game_filter",
+        "label": "Default game filter",
+        "options": [
+          { "value": "all", "label": "All games" },
+          { "value": "mtg", "label": "Magic: The Gathering" },
+          { "value": "pokemon", "label": "Pokémon" },
+          { "value": "yugioh", "label": "Yu-Gi-Oh!" },
+          { "value": "onepiece", "label": "One Piece" },
+          { "value": "lorcana", "label": "Lorcana" }
+        ],
+        "default": "all"
+      },
+      {
+        "type": "select",
+        "id": "condition_guide_style",
+        "label": "Condition guide display",
+        "options": [
+          { "value": "modal", "label": "Modal" },
+          { "value": "tooltip", "label": "Tooltip" }
+        ],
+        "default": "modal"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_card_number",
+        "label": "Show card number on product page",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Social and footer",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Social media"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter",
+        "label": "X (Twitter) handle",
+        "info": "e.g. @yourshop"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram handle",
+        "info": "e.g. @yourshop"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube",
+        "label": "YouTube URL"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok handle",
+        "info": "e.g. @yourshop"
+      },
+      {
+        "type": "text",
+        "id": "social_discord",
+        "label": "Discord invite URL"
+      },
+      {
+        "type": "header",
+        "content": "Footer"
+      },
+      {
+        "type": "range",
+        "id": "footer_columns",
+        "label": "Footer link columns",
+        "min": 2,
+        "max": 4,
+        "step": 1,
+        "default": 4
+      }
+    ]
+  },
+  {
+    "name": "Checkout",
+    "settings": [
+      {
+        "type": "textarea",
+        "id": "checkout_custom_css",
+        "label": "Custom checkout CSS",
+        "info": "Shopify Plus only. Custom CSS applied to the checkout page."
+      }
+    ]
+  }
+]

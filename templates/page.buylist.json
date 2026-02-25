@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "hero": {
+      "type": "page-buylist-hero",
+      "settings": {}
+    },
+    "form": {
+      "type": "page-buylist-form",
+      "settings": {}
+    },
+    "policy": {
+      "type": "page-buylist-policy",
+      "settings": {}
+    }
+  },
+  "order": ["hero", "form", "policy"]
+}

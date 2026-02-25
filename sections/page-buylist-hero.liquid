@@ -1,0 +1,39 @@
+<section class="py-section">
+  <div class="mx-auto max-w-content px-4 text-center">
+    <h1 class="text-4xl font-heading font-bold text-text mb-4">{{ section.settings.heading | default: 'buylist.hero_title' | t }}</h1>
+    {%- if section.settings.subheading != blank -%}
+      <p class="text-lg text-text/70">{{ section.settings.subheading }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Buylist hero",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "We buy your cards"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Turn your collection into cash"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Buylist hero"
+    }
+  ]
+}
+{% endschema %}

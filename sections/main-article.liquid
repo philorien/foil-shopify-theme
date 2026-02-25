@@ -1,0 +1,31 @@
+<section class="py-section">
+  <div class="mx-auto max-w-content px-4">
+    <article class="max-w-3xl mx-auto">
+      <header class="mb-8">
+        <h1 class="text-3xl font-heading font-bold text-text mb-2">{{ article.title }}</h1>
+        <p class="text-sm text-text/50">{{ article.published_at | date: '%B %d, %Y' }} &middot; {{ article.author }}</p>
+      </header>
+      {%- if article.image -%}
+        <img
+          src="{{ article.image | image_url: width: 1200 }}"
+          alt="{{ article.image.alt | default: article.title | escape }}"
+          width="1200"
+          height="{{ 1200 | divided_by: article.image.aspect_ratio | round }}"
+          class="w-full rounded mb-8"
+          loading="eager"
+        >
+      {%- endif -%}
+      <div class="prose max-w-none">
+        {{ article.content }}
+      </div>
+    </article>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Article",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}

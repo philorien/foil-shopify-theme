@@ -1,0 +1,63 @@
+{%- paginate collection.products by 24 -%}
+  <section class="pb-section">
+    <div class="mx-auto max-w-content px-4">
+      <p class="text-sm text-text/50 mb-4">
+        {{ 'collections.results_count' | t: count: collection.products_count }}
+      </p>
+
+      {%- if collection.products.size > 0 -%}
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          {%- for product in collection.products -%}
+            {%- render 'card-product', product: product -%}
+          {%- endfor -%}
+        </div>
+
+        {%- if paginate.pages > 1 -%}
+          <nav class="flex justify-center gap-2 mt-8" aria-label="Pagination">
+            {%- if paginate.previous -%}
+              <a href="{{ paginate.previous.url }}" class="px-4 py-2 border border-border rounded text-sm text-text hover:bg-surface transition-colors">
+                {{ 'general.pagination.previous' | t }}
+              </a>
+            {%- endif -%}
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}
+                <a href="{{ part.url }}" class="px-3 py-2 border border-border rounded text-sm text-text hover:bg-surface transition-colors">
+                  {{ part.title }}
+                </a>
+              {%- else -%}
+                <span class="px-3 py-2 bg-primary text-white rounded text-sm">
+                  {{ part.title }}
+                </span>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if paginate.next -%}
+              <a href="{{ paginate.next.url }}" class="px-4 py-2 border border-border rounded text-sm text-text hover:bg-surface transition-colors">
+                {{ 'general.pagination.next' | t }}
+              </a>
+            {%- endif -%}
+          </nav>
+        {%- endif -%}
+      {%- else -%}
+        <p class="text-text/50">{{ 'collections.no_results' | t }}</p>
+      {%- endif -%}
+    </div>
+  </section>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Collection grid",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 12,
+      "max": 48,
+      "step": 4,
+      "default": 24
+    }
+  ]
+}
+{% endschema %}

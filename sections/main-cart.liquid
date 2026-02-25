@@ -1,0 +1,56 @@
+<section class="py-section">
+  <div class="mx-auto max-w-content px-4">
+    <h1 class="text-3xl font-heading font-bold text-text mb-8">{{ 'cart.title' | t }}</h1>
+
+    {%- if cart.item_count > 0 -%}
+      <form action="{{ routes.cart_url }}" method="post">
+        {%- for item in cart.items -%}
+          <div class="flex items-center gap-4 py-4 border-b border-border">
+            {%- if item.image -%}
+              <img
+                src="{{ item.image | image_url: width: 120 }}"
+                alt="{{ item.image.alt | default: item.title | escape }}"
+                width="60"
+                height="84"
+                class="rounded card-aspect object-cover"
+                loading="lazy"
+              >
+            {%- endif -%}
+            <div class="flex-1">
+              <a href="{{ item.url }}" class="font-bold text-text hover:text-primary transition-colors">{{ item.title }}</a>
+              <p class="text-sm text-text/50">{{ item.variant.title }}</p>
+              <p class="text-sm text-primary">{{ item.final_price | money }}</p>
+            </div>
+            <div class="text-sm text-text/50">
+              {{ 'products.quantity' | t }}: {{ item.quantity }}
+            </div>
+          </div>
+        {%- endfor -%}
+
+        <div class="flex justify-between items-center mt-8">
+          <p class="text-xl font-bold text-text">{{ 'cart.subtotal' | t }}: {{ cart.total_price | money }}</p>
+          <button
+            type="submit"
+            name="checkout"
+            class="py-3 px-8 bg-primary text-white font-bold rounded hover:opacity-90 transition-opacity"
+          >
+            {{ 'cart.checkout' | t }}
+          </button>
+        </div>
+      </form>
+    {%- else -%}
+      <p class="text-text/50">{{ 'cart.empty' | t }}</p>
+      <a href="{{ routes.all_products_collection_url }}" class="inline-block mt-4 text-primary hover:underline">
+        {{ 'cart.continue_shopping' | t }}
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Cart",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}

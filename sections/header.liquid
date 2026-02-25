@@ -1,0 +1,106 @@
+{%- liquid
+  assign logo = section.settings.logo
+  assign menu = section.settings.menu
+-%}
+
+<header class="sticky top-0 z-50 bg-surface border-b border-border" role="banner">
+  <div class="mx-auto max-w-content px-4">
+    <div class="flex items-center justify-between h-16">
+      {%- comment -%} Logo {%- endcomment -%}
+      <a href="/" class="flex-shrink-0">
+        {%- if logo != blank -%}
+          <img
+            src="{{ logo | image_url: width: 200 }}"
+            alt="{{ shop.name }}"
+            width="{{ logo.width }}"
+            height="{{ logo.height }}"
+            loading="eager"
+          >
+        {%- else -%}
+          <span class="text-xl font-heading font-bold text-text">{{ shop.name }}</span>
+        {%- endif -%}
+      </a>
+
+      {%- comment -%} Navigation {%- endcomment -%}
+      {%- if menu != blank -%}
+        <nav class="hidden md:flex items-center gap-6" aria-label="{{ 'general.menu' | t }}">
+          {%- for link in linklists[menu].links -%}
+            <a
+              href="{{ link.url }}"
+              class="text-sm text-text hover:text-primary transition-colors"
+              {%- if link.current %} aria-current="page"{% endif -%}
+            >
+              {{- link.title -}}
+            </a>
+          {%- endfor -%}
+        </nav>
+      {%- endif -%}
+
+      {%- comment -%} Actions {%- endcomment -%}
+      <div class="flex items-center gap-4">
+        {%- comment -%} Search trigger {%- endcomment -%}
+        <button
+          type="button"
+          class="text-text hover:text-primary transition-colors"
+          aria-label="{{ 'accessibility.open_search' | t }}"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.3-4.3"/>
+          </svg>
+        </button>
+
+        {%- comment -%} Dark mode toggle {%- endcomment -%}
+        {%- if settings.enable_dark_mode_toggle -%}
+          <button
+            type="button"
+            class="text-text hover:text-primary transition-colors"
+            aria-label="{{ 'accessibility.dark_mode_toggle' | t }}"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+            </svg>
+          </button>
+        {%- endif -%}
+
+        {%- comment -%} Cart trigger {%- endcomment -%}
+        <a
+          href="{{ routes.cart_url }}"
+          class="relative text-text hover:text-primary transition-colors"
+          aria-label="{{ 'accessibility.open_cart' | t }}"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="8" cy="21" r="1"/>
+            <circle cx="19" cy="21" r="1"/>
+            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+          </svg>
+          {%- if cart.item_count > 0 -%}
+            <span class="absolute -top-1.5 -right-1.5 flex items-center justify-center w-4 h-4 text-[10px] font-bold bg-primary text-white rounded-full">
+              {{- cart.item_count -}}
+            </span>
+          {%- endif -%}
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Navigation menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

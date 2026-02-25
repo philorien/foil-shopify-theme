@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "hero": {
+      "type": "page-set-landing-hero",
+      "settings": {}
+    },
+    "browse": {
+      "type": "page-set-landing-browse",
+      "settings": {}
+    }
+  },
+  "order": ["hero", "browse"]
+}

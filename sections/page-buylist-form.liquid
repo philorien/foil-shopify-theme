@@ -1,0 +1,86 @@
+<section class="py-section">
+  <div class="mx-auto max-w-2xl px-4">
+    {%- form 'contact', id: 'buylist-form' -%}
+      {%- if form.posted_successfully? -%}
+        <div class="p-4 mb-6 bg-success/10 border border-success rounded text-success text-sm">
+          {{ 'buylist.form_success' | t }}
+        </div>
+      {%- endif -%}
+
+      {%- if form.errors -%}
+        <div class="p-4 mb-6 bg-error/10 border border-error rounded text-error text-sm">
+          {{ form.errors | default_errors }}
+        </div>
+      {%- endif -%}
+
+      <input type="hidden" name="contact[subject]" value="Buylist Submission">
+
+      <div class="space-y-4">
+        <div>
+          <label for="buylist-name" class="block text-sm font-bold text-text mb-1">{{ 'buylist.form_name' | t }}</label>
+          <input
+            type="text"
+            id="buylist-name"
+            name="contact[name]"
+            required
+            class="w-full px-4 py-3 bg-surface border border-border rounded text-text placeholder:text-text/50 focus:outline-none focus:border-primary"
+          >
+        </div>
+
+        <div>
+          <label for="buylist-email" class="block text-sm font-bold text-text mb-1">{{ 'buylist.form_email' | t }}</label>
+          <input
+            type="email"
+            id="buylist-email"
+            name="contact[email]"
+            required
+            class="w-full px-4 py-3 bg-surface border border-border rounded text-text placeholder:text-text/50 focus:outline-none focus:border-primary"
+          >
+        </div>
+
+        <div>
+          <label for="buylist-condition" class="block text-sm font-bold text-text mb-1">{{ 'buylist.form_condition' | t }}</label>
+          <select
+            id="buylist-condition"
+            name="contact[condition]"
+            class="w-full px-4 py-3 bg-surface border border-border rounded text-text focus:outline-none focus:border-primary"
+          >
+            <option value="nm">{{ 'conditions.nm' | t }}</option>
+            <option value="lp">{{ 'conditions.lp' | t }}</option>
+            <option value="mp">{{ 'conditions.mp' | t }}</option>
+            <option value="hp">{{ 'conditions.hp' | t }}</option>
+            <option value="mixed">Mixed conditions</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="buylist-description" class="block text-sm font-bold text-text mb-1">{{ 'buylist.form_description' | t }}</label>
+          <textarea
+            id="buylist-description"
+            name="contact[body]"
+            rows="6"
+            required
+            class="w-full px-4 py-3 bg-surface border border-border rounded text-text placeholder:text-text/50 focus:outline-none focus:border-primary resize-y"
+          ></textarea>
+        </div>
+
+        <button type="submit" class="w-full py-3 px-6 bg-primary text-white font-bold rounded hover:opacity-90 transition-opacity">
+          {{ 'buylist.form_submit' | t }}
+        </button>
+      </div>
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Buylist form",
+  "tag": "section",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Buylist form"
+    }
+  ]
+}
+{% endschema %}

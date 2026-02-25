@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" data-theme="{{ settings.dark_mode_default }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>
+      {%- if page_title -%}
+        {{- page_title -}}
+        {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+        {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+        {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      {%- else -%}
+        {{- shop.name -}}
+      {%- endif -%}
+    </title>
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    {%- render 'vite-tag', entry: 'theme.css', preload_stylesheet: true -%}
+
+    {{ content_for_header }}
+
+    {%- style -%}
+      {{ settings.font_heading | font_face: font_display: 'swap' }}
+      {{ settings.font_body | font_face: font_display: 'swap' }}
+
+      :root {
+        --color-primary: {{ settings.color_primary }};
+        --color-secondary: {{ settings.color_secondary }};
+        --color-accent: {{ settings.color_accent }};
+        --color-background: {{ settings.color_background }};
+        --color-surface: {{ settings.color_surface }};
+        --color-text: {{ settings.color_text }};
+        --color-border: {{ settings.color_border }};
+        --color-error: {{ settings.color_error }};
+        --color-success: {{ settings.color_success }};
+
+        --font-heading: {{ settings.font_heading.family }}, {{ settings.font_heading.fallback_families }};
+        --font-body: {{ settings.font_body.family }}, {{ settings.font_body.fallback_families }};
+        --font-size-base: {{ settings.font_size_base }}px;
+        --heading-scale: {{ settings.heading_scale | divided_by: 100.0 }};
+
+        --border-radius-base: {{ settings.border_radius_base }}px;
+        --max-width: {{ settings.max_content_width }}px;
+        --section-spacing: {{ settings.section_spacing }}px;
+      }
+    {%- endstyle -%}
+  </head>
+
+  <body class="font-body text-text bg-background antialiased">
+    <a href="#main" class="skip-to-content">
+      {{- 'accessibility.skip_to_content' | t -}}
+    </a>
+
+    {%- section 'header' -%}
+
+    <main id="main" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {%- section 'footer' -%}
+
+    {%- render 'vite-tag', entry: 'theme.js' -%}
+  </body>
+</html>

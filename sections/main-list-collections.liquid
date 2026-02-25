@@ -1,0 +1,36 @@
+<section class="py-section">
+  <div class="mx-auto max-w-content px-4">
+    <h1 class="text-3xl font-heading font-bold text-text mb-8">{{ 'collections.title' | t }}</h1>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {%- for collection in collections -%}
+        <a href="{{ collection.url }}" class="group bg-surface border border-border rounded overflow-hidden hover:border-primary transition-colors">
+          {%- if collection.image -%}
+            <img
+              src="{{ collection.image | image_url: width: 600 }}"
+              alt="{{ collection.image.alt | default: collection.title | escape }}"
+              width="600"
+              height="400"
+              class="w-full aspect-[3/2] object-cover"
+              loading="lazy"
+            >
+          {%- else -%}
+            <div class="w-full aspect-[3/2] bg-background"></div>
+          {%- endif -%}
+          <div class="p-4">
+            <h2 class="font-heading font-bold text-text group-hover:text-primary transition-colors">{{ collection.title }}</h2>
+            <p class="text-sm text-text/50">{{ collection.products_count }} {{ 'collections.results_count' | t: count: collection.products_count }}</p>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collections list",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,49 @@
+<section class="py-section">
+  <div class="mx-auto max-w-content px-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {%- comment -%} Product gallery — placeholder {%- endcomment -%}
+      <div>
+        {%- if product.featured_image -%}
+          <img
+            src="{{ product.featured_image | image_url: width: 800 }}"
+            alt="{{ product.featured_image.alt | default: product.title | escape }}"
+            width="800"
+            height="{{ 800 | divided_by: product.featured_image.aspect_ratio | round }}"
+            class="w-full rounded"
+            loading="eager"
+          >
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Product info — placeholder {%- endcomment -%}
+      <div>
+        <h1 class="text-3xl font-heading font-bold text-text mb-2">{{ product.title }}</h1>
+        <p class="text-2xl text-primary mb-4">{{ product.price | money }}</p>
+        <div class="prose max-w-none mb-6">{{ product.description }}</div>
+
+        {%- form 'product', product -%}
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          <button
+            type="submit"
+            class="w-full py-3 px-6 bg-primary text-white font-bold rounded hover:opacity-90 transition-opacity disabled:opacity-50"
+            {%- unless product.available %} disabled{% endunless -%}
+          >
+            {%- if product.available -%}
+              {{ 'products.add_to_cart' | t }}
+            {%- else -%}
+              {{ 'products.sold_out' | t }}
+            {%- endif -%}
+          </button>
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product main",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}

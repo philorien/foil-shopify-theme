@@ -1,0 +1,40 @@
+{%- comment -%}
+  Product card snippet — placeholder.
+  Accepts: product (product object)
+  Usage: {% render 'card-product', product: product %}
+{%- endcomment -%}
+
+{%- if product != blank -%}
+  <div class="group bg-surface border border-border rounded overflow-hidden hover:border-primary transition-colors">
+    <a href="{{ product.url }}" class="block">
+      {%- if product.featured_image -%}
+        <img
+          src="{{ product.featured_image | image_url: width: 400 }}"
+          alt="{{ product.featured_image.alt | default: product.title | escape }}"
+          width="400"
+          height="560"
+          class="w-full card-aspect object-cover"
+          loading="lazy"
+        >
+      {%- else -%}
+        <div class="w-full card-aspect bg-background"></div>
+      {%- endif -%}
+    </a>
+    <div class="p-3">
+      <a href="{{ product.url }}" class="block">
+        <h3 class="text-sm font-bold text-text group-hover:text-primary transition-colors line-clamp-2 mb-1">
+          {{ product.title }}
+        </h3>
+      </a>
+      <p class="text-sm text-primary font-bold">
+        {{ product.price | money }}
+        {%- if product.compare_at_price > product.price -%}
+          <span class="text-text/30 line-through ml-1">{{ product.compare_at_price | money }}</span>
+        {%- endif -%}
+      </p>
+      {%- unless product.available -%}
+        <p class="text-xs text-error mt-1">{{ 'products.sold_out' | t }}</p>
+      {%- endunless -%}
+    </div>
+  </div>
+{%- endif -%}
