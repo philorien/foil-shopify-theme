@@ -4,6 +4,10 @@ A Shopify 2.0 theme purpose-built for Trading Card Game shops. Dark-mode-first, 
 
 Built for stores selling Magic: The Gathering, Pokemon, Yu-Gi-Oh!, One Piece, Lorcana, and similar products.
 
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/543c7836-f0fe-4f65-8399-5a3dc9c15125" />
+
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/8079d04a-9d8d-47b0-9bc6-42d8d2d5afaf" />
+
 ## Tech Stack
 
 - **Shopify Liquid** — Shopify 2.0 architecture (JSON templates, sections everywhere)
