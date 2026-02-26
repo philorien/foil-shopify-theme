@@ -1,13 +1,55 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "page-set-landing-hero",
-      "settings": {}
+      "settings": {
+        "heading": "&nbsp;",
+        "subheading": "",
+        "release_date": "",
+        "banner_image": "shopify://shop_images/01k7j5qsxgyads1ysp45_701cc072-44c3-4900-92b1-87eb7848fbaa.jpg"
+      }
     },
     "browse": {
       "type": "page-set-landing-browse",
-      "settings": {}
+      "blocks": {
+        "category_MbTwH4": {
+          "type": "category",
+          "settings": {
+            "label": "",
+            "collection": "tmnt-magic"
+          }
+        }
+      },
+      "block_order": [
+        "category_MbTwH4"
+      ],
+      "settings": {
+        "heading": "Browse by type"
+      }
+    },
+    "featured_products_MRjjwx": {
+      "type": "featured-products",
+      "name": "Featured products",
+      "settings": {
+        "heading": "New arrivals",
+        "collection": "tmnt-magic",
+        "products_to_show": 8,
+        "layout": "scroll"
+      }
     }
   },
-  "order": ["hero", "browse"]
+  "order": [
+    "hero",
+    "browse",
+    "featured_products_MRjjwx"
+  ]
 }

@@ -2,30 +2,101 @@
   "sections": {
     "hero": {
       "type": "hero-banner",
-      "settings": {}
+      "settings": {
+        "image": "shopify://shop_images/foil.png",
+        "heading": "Your local card shop",
+        "subtext": "Singles, sealed product, and accessories for every game.",
+        "overlay_opacity": 70,
+        "min_height": 500,
+        "text_alignment": "center"
+      }
     },
     "game_selector": {
       "type": "game-selector",
-      "settings": {}
-    },
-    "featured_collections": {
-      "type": "featured-collections",
-      "settings": {}
+      "blocks": {
+        "game_wn6YXb": {
+          "type": "game",
+          "name": "Lorcana",
+          "settings": {
+            "label": "Disney Lorcana",
+            "image": "shopify://shop_images/view5-disney-lorcana-beast-mat-11098262-pack.webp",
+            "link": "shopify://collections/disney-lorcana"
+          }
+        },
+        "game_ydeKaL": {
+          "type": "game",
+          "name": "Pokemon",
+          "settings": {
+            "label": "Pokemon",
+            "image": "shopify://shop_images/pokemon-logo-vector.png",
+            "link": "shopify://collections/pokemon"
+          }
+        },
+        "game_FwFrDa": {
+          "type": "game",
+          "name": "MTG",
+          "settings": {
+            "label": "Magic: The Gathering",
+            "image": "shopify://shop_images/david-frasheski-david-frasheski-wildsofeldraine-square-logo.webp",
+            "link": "shopify://collections/magic"
+          }
+        },
+        "game_nKnKCQ": {
+          "type": "game",
+          "name": "Yugioh!",
+          "settings": {
+            "label": "Yu-Gi-Oh!",
+            "image": "shopify://shop_images/ygo-yu-gi-oh-tournois-logo-jeux-Toulon-L-Ataniere.webp",
+            "link": "shopify://collections/yu-gi-oh"
+          }
+        }
+      },
+      "block_order": [
+        "game_wn6YXb",
+        "game_ydeKaL",
+        "game_FwFrDa",
+        "game_nKnKCQ"
+      ],
+      "settings": {
+        "heading": "Shop by game"
+      }
     },
     "featured_products": {
       "type": "featured-products",
-      "settings": {}
+      "settings": {
+        "heading": "Hot Singles",
+        "collection": "singles",
+        "products_to_show": 8,
+        "layout": "scroll"
+      }
+    },
+    "featured_products_fe7p8V": {
+      "type": "featured-products",
+      "name": "Featured products",
+      "settings": {
+        "heading": "Sealed Products",
+        "collection": "sealed-product",
+        "products_to_show": 6,
+        "layout": "scroll"
+      }
     },
     "set_spotlight": {
       "type": "set-spotlight",
-      "settings": {}
+      "settings": {
+        "heading": "TAP INTO TURTLE POWER",
+        "description": "<p>Your favorite lean mean green ninja team is out of the sewers and in Magic: The Gathering. Teenage Mutant Ninja Turtles flip onto Magic cards and use turtle power and toughness to protect the streets from Shredder and the mutants making mischief.</p>",
+        "image": "shopify://shop_images/01k7j5qsxgyads1ysp45.jpg",
+        "collection": "tmnt-magic",
+        "release_date": "March 2026",
+        "cta_label": "Browse set"
+      }
     }
   },
   "order": [
     "hero",
     "game_selector",
-    "featured_collections",
     "featured_products",
+    "featured_products_fe7p8V",
     "set_spotlight"
   ]
 }

@@ -1,8 +1,20 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "page-buylist-hero",
-      "settings": {}
+      "settings": {
+        "heading": "We buy your cards",
+        "subheading": "Turn your collection into cash"
+      }
     },
     "form": {
       "type": "page-buylist-form",
@@ -10,8 +22,15 @@
     },
     "policy": {
       "type": "page-buylist-policy",
-      "settings": {}
+      "settings": {
+        "heading": "Buylist pricing policy",
+        "content": "<p>We keep this simple.</p><p><strong>How we price cards:</strong><br/>Buylist prices are based on current market data, recent sales, card condition, demand, and our inventory needs. Prices can change as the market shifts.</p><p><strong>Condition matters:</strong><br/>Cards are evaluated on arrival using standard grading (NM, LP, MP, HP, Damaged). If condition differs from what was submitted, we’ll adjust the offer accordingly and let you know.</p><p><strong>When prices are locked:</strong><br/>In-store offers are locked at the time of transaction.<br/><br/>Mailed buylists are locked once received and reviewed.</p><p><strong>Payment options:</strong><br/>We offer cash or store credit. Store credit typically pays more.</p><p><strong>A few commonsense notes:</strong></p><ul><li>Please package mailed cards securely.</li><li>We can’t return counterfeit cards.</li><li>We reserve the right to decline any submission.<br/></li></ul><p>That’s it. Fair prices. Clear process. More cardboard into the wild.</p>"
+      }
     }
   },
-  "order": ["hero", "form", "policy"]
+  "order": [
+    "hero",
+    "form",
+    "policy"
+  ]
 }
