@@ -1,6 +1,8 @@
 <section class="py-section">
   <div class="mx-auto max-w-2xl px-4">
-    <h2 class="text-2xl font-heading font-bold text-text mb-4">{{ section.settings.heading | default: 'buylist.policy_title' | t }}</h2>
+    {%- assign policy_heading = section.settings.heading -%}
+    {%- if policy_heading == blank -%}{%- assign policy_heading = 'buylist.policy_title' | t -%}{%- endif -%}
+    <h2 class="text-2xl font-heading font-bold text-text mb-4">{{ policy_heading }}</h2>
     <div class="prose max-w-none text-text/70">
       {{ section.settings.content }}
     </div>

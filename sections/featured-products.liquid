@@ -1,0 +1,83 @@
+{%- liquid
+  assign heading = section.settings.heading
+  assign coll = section.settings.collection
+  assign limit = section.settings.products_to_show | default: 8
+  assign layout = section.settings.layout | default: 'scroll'
+-%}
+
+<section class="py-section" {{ section.shopify_attributes }}>
+  <div class="mx-auto max-w-content px-4">
+    <div class="flex items-center justify-between mb-6">
+      {%- if heading != blank -%}
+        <h2 class="text-h3 font-heading font-bold text-text">{{ heading }}</h2>
+      {%- endif -%}
+      {%- if coll != blank -%}
+        <a href="{{ coll.url }}" class="text-sm text-primary hover:underline">View all</a>
+      {%- endif -%}
+    </div>
+
+    {%- if coll != blank and coll.products.size > 0 -%}
+      {%- if layout == 'scroll' -%}
+        <div class="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-thin">
+          {%- for product in coll.products limit: limit -%}
+            <div class="flex-shrink-0 w-48 snap-start">
+              {%- render 'card-product', product: product -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          {%- for product in coll.products limit: limit -%}
+            {%- render 'card-product', product: product -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <p class="text-text opacity-40 text-center py-8">Select a collection in the theme editor</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured products",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "New arrivals"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 4,
+      "max": 16,
+      "step": 2,
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "scroll", "label": "Horizontal scroll" },
+        { "value": "grid", "label": "Grid" }
+      ],
+      "default": "scroll"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured products"
+    }
+  ]
+}
+{% endschema %}

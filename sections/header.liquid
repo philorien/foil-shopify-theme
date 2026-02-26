@@ -6,6 +6,18 @@
 <header class="sticky top-0 z-50 bg-surface border-b border-border" role="banner">
   <div class="mx-auto max-w-content px-4">
     <div class="flex items-center justify-between h-16">
+      {%- comment -%} Mobile menu trigger (visible < md) {%- endcomment -%}
+      <button
+        type="button"
+        class="md:hidden text-text hover:text-primary transition-colors"
+        data-mobile-menu-open
+        aria-label="{{ 'accessibility.open_menu' | t }}"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>
+        </svg>
+      </button>
+
       {%- comment -%} Logo {%- endcomment -%}
       <a href="/" class="flex-shrink-0">
         {%- if logo != blank -%}
@@ -21,7 +33,7 @@
         {%- endif -%}
       </a>
 
-      {%- comment -%} Navigation {%- endcomment -%}
+      {%- comment -%} Desktop navigation {%- endcomment -%}
       {%- if menu != blank -%}
         <nav class="hidden md:flex items-center gap-6" aria-label="{{ 'general.menu' | t }}">
           {%- for link in linklists[menu].links -%}
@@ -42,6 +54,7 @@
         <button
           type="button"
           class="text-text hover:text-primary transition-colors"
+          data-search-open
           aria-label="{{ 'accessibility.open_search' | t }}"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -52,21 +65,31 @@
 
         {%- comment -%} Dark mode toggle {%- endcomment -%}
         {%- if settings.enable_dark_mode_toggle -%}
-          <button
-            type="button"
-            class="text-text hover:text-primary transition-colors"
-            aria-label="{{ 'accessibility.dark_mode_toggle' | t }}"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
-            </svg>
-          </button>
+          <tcg-dark-mode-toggle>
+            <button
+              type="button"
+              class="text-text hover:text-primary transition-colors"
+              aria-label="{{ 'accessibility.dark_mode_toggle' | t }}"
+            >
+              <span data-icon="dark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+                </svg>
+              </span>
+              <span data-icon="light" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+                </svg>
+              </span>
+            </button>
+          </tcg-dark-mode-toggle>
         {%- endif -%}
 
         {%- comment -%} Cart trigger {%- endcomment -%}
-        <a
-          href="{{ routes.cart_url }}"
+        <button
+          type="button"
           class="relative text-text hover:text-primary transition-colors"
+          data-cart-open
           aria-label="{{ 'accessibility.open_cart' | t }}"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -74,16 +97,54 @@
             <circle cx="19" cy="21" r="1"/>
             <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
           </svg>
-          {%- if cart.item_count > 0 -%}
-            <span class="absolute -top-1.5 -right-1.5 flex items-center justify-center w-4 h-4 text-[10px] font-bold bg-primary text-white rounded-full">
-              {{- cart.item_count -}}
-            </span>
-          {%- endif -%}
-        </a>
+          <span
+            class="absolute -top-1.5 -right-1.5 flex items-center justify-center w-4 h-4 text-[10px] font-bold bg-primary text-white rounded-full{% if cart.item_count == 0 %} hidden{% endif %}"
+            data-cart-count
+          >
+            {{- cart.item_count -}}
+          </span>
+        </button>
       </div>
     </div>
   </div>
 </header>
+
+{%- comment -%} Mobile menu drawer {%- endcomment -%}
+<tcg-mobile-menu class="fixed inset-0 z-50" hidden role="dialog" aria-modal="true" aria-label="{{ 'accessibility.open_menu' | t }}">
+  <div class="fixed inset-0 bg-black/60" data-mobile-menu-backdrop></div>
+  <div class="fixed top-0 left-0 bottom-0 w-72 max-w-[80vw] bg-surface border-r border-border flex flex-col" data-mobile-menu-panel>
+    <div class="flex items-center justify-between p-4 border-b border-border">
+      <span class="font-heading font-bold text-text">{{ 'general.menu' | t }}</span>
+      <button
+        type="button"
+        class="text-text hover:text-primary transition-colors"
+        data-mobile-menu-close
+        aria-label="{{ 'accessibility.close_menu' | t }}"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+        </svg>
+      </button>
+    </div>
+    <nav class="flex-1 overflow-y-auto p-4" aria-label="{{ 'general.menu' | t }}">
+      {%- if menu != blank -%}
+        <ul class="space-y-1">
+          {%- for link in linklists[menu].links -%}
+            <li>
+              <a
+                href="{{ link.url }}"
+                class="block py-2 px-3 text-text hover:text-primary hover:bg-background rounded transition-colors"
+                {%- if link.current %} aria-current="page"{% endif -%}
+              >
+                {{- link.title -}}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </nav>
+  </div>
+</tcg-mobile-menu>
 
 {% schema %}
 {

@@ -4,8 +4,8 @@
     "theme_name": "Foil",
     "theme_version": "0.1.0",
     "theme_author": "Foil Theme",
-    "theme_documentation_url": "",
-    "theme_support_url": ""
+    "theme_documentation_url": "https://github.com/foil-theme/docs",
+    "theme_support_url": "https://github.com/foil-theme/docs/issues"
   },
   {
     "name": "Colors",
@@ -147,6 +147,16 @@
         "step": 2,
         "unit": "px",
         "default": 8
+      },
+      {
+        "type": "header",
+        "content": "Favicon"
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon image",
+        "info": "Will be scaled to 32x32px. Use a square PNG for best results."
       }
     ]
   },
@@ -252,6 +262,38 @@
         "id": "enable_dark_mode_toggle",
         "label": "Allow visitors to toggle dark/light mode",
         "default": true
+      },
+      {
+        "type": "header",
+        "content": "Light mode colors"
+      },
+      {
+        "type": "paragraph",
+        "content": "Override surface and text colors for light mode. Accent colors (primary, secondary, accent) are shared between modes."
+      },
+      {
+        "type": "color",
+        "id": "color_light_background",
+        "label": "Light mode background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "color_light_surface",
+        "label": "Light mode surface",
+        "default": "#f8fafc"
+      },
+      {
+        "type": "color",
+        "id": "color_light_text",
+        "label": "Light mode text",
+        "default": "#0f172a"
+      },
+      {
+        "type": "color",
+        "id": "color_light_border",
+        "label": "Light mode border",
+        "default": "#e2e8f0"
       }
     ]
   },

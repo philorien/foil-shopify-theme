@@ -1,10 +1,52 @@
-<section class="py-section">
-  <div class="mx-auto max-w-content px-4 text-center">
-    <h1 class="text-4xl font-heading font-bold text-text mb-4">{{ section.settings.heading | default: 'buylist.hero_title' | t }}</h1>
-    {%- if section.settings.subheading != blank -%}
-      <p class="text-lg text-text/70">{{ section.settings.subheading }}</p>
-    {%- endif -%}
-  </div>
+{%- liquid
+  assign image = section.settings.background_image
+  assign heading = section.settings.heading
+  if heading == blank
+    assign heading = 'buylist.hero_title' | t
+  endif
+  assign subheading = section.settings.subheading
+  if subheading == blank
+    assign subheading = 'buylist.hero_subtitle' | t
+  endif
+-%}
+
+<section class="relative overflow-hidden" {{ section.shopify_attributes }}>
+  {%- if image != blank -%}
+    <div class="relative" style="min-height: 280px;">
+      <img
+        src="{{ image | image_url: width: 1920 }}"
+        srcset="
+          {{ image | image_url: width: 960 }} 960w,
+          {{ image | image_url: width: 1440 }} 1440w,
+          {{ image | image_url: width: 1920 }} 1920w
+        "
+        sizes="100vw"
+        alt="{{ heading | escape }}"
+        width="1920"
+        height="{{ 1920 | divided_by: image.aspect_ratio | round }}"
+        class="absolute inset-0 w-full h-full object-cover"
+        loading="eager"
+      >
+      <div class="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent"></div>
+      <div class="relative flex items-end min-h-[280px] pb-8">
+        <div class="mx-auto max-w-content px-4 text-center w-full">
+          <h1 class="text-h1 font-heading font-bold text-white mb-3 drop-shadow-lg">{{ heading }}</h1>
+          {%- if subheading != blank -%}
+            <p class="text-lg text-white/80">{{ subheading }}</p>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {%- else -%}
+    <div class="py-section">
+      <div class="mx-auto max-w-content px-4 text-center">
+        <h1 class="text-h1 font-heading font-bold text-text mb-4">{{ heading }}</h1>
+        {%- if subheading != blank -%}
+          <p class="text-lg text-text opacity-70">{{ subheading }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
 </section>
 
 {% schema %}

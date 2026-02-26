@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "main": {
+      "type": "page-content",
+      "settings": {
+        "show_title": true
+      }
+    },
+    "condition_guide": {
+      "type": "condition-guide",
+      "settings": {
+        "heading": "Card condition guide",
+        "description": "<p>We grade every card we sell using industry-standard condition categories. Here's what each grade means so you know exactly what to expect.</p>"
+      }
+    }
+  },
+  "order": ["main", "condition_guide"]
+}

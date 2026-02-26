@@ -7,6 +7,7 @@
     "close": "Close",
     "loading": "Loading",
     "share": "Share",
+    "view_all": "View all",
     "pagination": {
       "previous": "Previous",
       "next": "Next",
@@ -15,6 +16,7 @@
   },
   "products": {
     "add_to_cart": "Add to cart",
+    "adding": "Adding...",
     "sold_out": "Sold out",
     "unavailable": "Unavailable",
     "quantity": "Quantity",
@@ -26,7 +28,9 @@
     "vendor": "Vendor",
     "type": "Type",
     "sku": "SKU",
-    "variant": "Variant"
+    "variant": "Choose options",
+    "related": "Related cards",
+    "recently_viewed": "Recently viewed"
   },
   "conditions": {
     "nm": "Near Mint",
@@ -88,6 +92,15 @@
     "pages": "Pages",
     "results_count": "{{ count }} results for \"{{ terms }}\""
   },
+  "homepage": {
+    "hero_heading": "Your local card shop",
+    "hero_subtext": "Singles, sealed product, and accessories for every game.",
+    "shop_now": "Shop now",
+    "shop_by_game": "Shop by game",
+    "shop_by_category": "Shop by category",
+    "new_arrivals": "New arrivals",
+    "latest_expansion": "Latest expansion"
+  },
   "accessibility": {
     "skip_to_content": "Skip to content",
     "close_modal": "Close",
@@ -100,7 +113,8 @@
     "dark_mode_toggle": "Toggle dark mode",
     "increase_quantity": "Increase quantity for {{ title }}",
     "decrease_quantity": "Decrease quantity for {{ title }}",
-    "remove_item": "Remove {{ title }} from cart"
+    "remove_item": "Remove {{ title }} from cart",
+    "view_image": "View image {{ index }}"
   },
   "buylist": {
     "hero_title": "We buy your cards",
@@ -112,6 +126,26 @@
     "form_submit": "Submit buylist",
     "form_success": "Thank you! We'll review your submission and get back to you.",
     "policy_title": "Buylist pricing policy"
+  },
+  "contact": {
+    "name": "Name",
+    "name_placeholder": "Your name",
+    "email": "Email",
+    "email_placeholder": "you@example.com",
+    "phone": "Phone",
+    "phone_placeholder": "Your phone number",
+    "subject": "Subject",
+    "subject_placeholder": "Select a topic",
+    "subject_order": "Order inquiry",
+    "subject_product": "Product question",
+    "subject_buylist": "Selling cards",
+    "subject_events": "Events & tournaments",
+    "subject_other": "Other",
+    "message": "Message",
+    "message_placeholder": "How can we help?",
+    "submit": "Send message",
+    "success": "Thanks for reaching out! We'll get back to you shortly.",
+    "error": "Please fix the following:"
   },
   "password": {
     "title": "Opening soon",

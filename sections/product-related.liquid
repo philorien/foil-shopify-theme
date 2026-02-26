@@ -1,0 +1,64 @@
+{%- comment -%}
+  Related products — shows products from the same collection,
+  excluding the current product. Horizontal scrollable row.
+{%- endcomment -%}
+
+{%- liquid
+  assign related_collection = product.collections | first
+  assign limit = section.settings.products_to_show | default: 8
+-%}
+
+{%- if related_collection != blank -%}
+  {%- assign related_products = related_collection.products | where: 'available' -%}
+  {%- assign has_related = false -%}
+  {%- for p in related_products limit: limit -%}
+    {%- unless p.id == product.id -%}
+      {%- assign has_related = true -%}
+      {%- break -%}
+    {%- endunless -%}
+  {%- endfor -%}
+
+  {%- if has_related -%}
+    <section class="py-section" {{ section.shopify_attributes }}>
+      <div class="mx-auto max-w-content px-4">
+        <h2 class="text-h4 font-heading font-bold text-text mb-6">
+          {{ section.settings.heading | default: 'Related cards' }}
+        </h2>
+
+        <div class="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-thin">
+          {%- for p in related_products limit: limit -%}
+            {%- unless p.id == product.id -%}
+              <div class="flex-shrink-0 w-48 snap-start">
+                {%- render 'card-product', product: p -%}
+              </div>
+            {%- endunless -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Related products",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Related cards"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 4,
+      "max": 16,
+      "step": 2,
+      "default": 8
+    }
+  ]
+}
+{% endschema %}

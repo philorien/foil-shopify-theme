@@ -1,16 +1,49 @@
-<section class="py-section">
-  <div class="mx-auto max-w-content px-4">
-    <h1 class="text-3xl font-heading font-bold text-text mb-2">{{ collection.title }}</h1>
-    {%- if collection.description != blank -%}
-      <div class="prose max-w-none text-text/70">{{ collection.description }}</div>
-    {%- endif -%}
-  </div>
+{%- liquid
+  assign banner = section.settings.banner_image
+-%}
+
+<section class="relative" {{ section.shopify_attributes }}>
+  {%- if banner != blank -%}
+    <div class="relative h-48 md:h-64 overflow-hidden">
+      <img
+        src="{{ banner | image_url: width: 1600 }}"
+        alt="{{ collection.title | escape }}"
+        width="1600"
+        height="{{ 1600 | divided_by: banner.aspect_ratio | round }}"
+        class="w-full h-full object-cover"
+        loading="eager"
+      >
+      <div class="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 right-0 mx-auto max-w-content px-4 pb-6">
+        <h1 class="text-h2 font-heading font-bold text-white drop-shadow-lg">{{ collection.title }}</h1>
+        {%- if collection.description != blank -%}
+          <div class="prose text-white/80 mt-1 max-w-2xl">{{ collection.description }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- else -%}
+    <div class="py-section">
+      <div class="mx-auto max-w-content px-4">
+        <h1 class="text-h2 font-heading font-bold text-text">{{ collection.title }}</h1>
+        {%- if collection.description != blank -%}
+          <div class="prose max-w-none text-text opacity-70 mt-2">{{ collection.description }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
 </section>
 
 {% schema %}
 {
   "name": "Collection header",
   "tag": "section",
-  "settings": []
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner image",
+      "info": "Optional hero banner behind the collection title"
+    }
+  ]
 }
 {% endschema %}

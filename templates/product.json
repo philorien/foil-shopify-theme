@@ -3,7 +3,15 @@
     "main": {
       "type": "product-main",
       "settings": {}
+    },
+    "related": {
+      "type": "product-related",
+      "settings": {}
+    },
+    "recently_viewed": {
+      "type": "product-recently-viewed",
+      "settings": {}
     }
   },
-  "order": ["main"]
+  "order": ["main", "related", "recently_viewed"]
 }

@@ -1,0 +1,50 @@
+{%- comment -%}
+  Recently viewed products — reads from localStorage via JS.
+  The tcg-recently-viewed component fetches product data from
+  /products/{handle}.json and renders cards client-side.
+{%- endcomment -%}
+
+<section class="py-section" {{ section.shopify_attributes }} id="recently-viewed">
+  <div class="mx-auto max-w-content px-4">
+    <h2 class="text-h4 font-heading font-bold text-text mb-6">
+      {{ section.settings.heading | default: 'Recently viewed' }}
+    </h2>
+
+    <tcg-recently-viewed
+      data-limit="{{ section.settings.products_to_show | default: 8 }}"
+      data-current-handle="{{ product.handle }}"
+    >
+      {%- comment -%}
+        Placeholder — hidden once JS renders content.
+        If JS is unavailable, this section is simply empty (graceful degradation).
+      {%- endcomment -%}
+      <div data-recently-viewed-grid
+        class="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-thin"
+      ></div>
+    </tcg-recently-viewed>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Recently viewed",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Recently viewed"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 4,
+      "max": 12,
+      "step": 2,
+      "default": 8
+    }
+  ]
+}
+{% endschema %}

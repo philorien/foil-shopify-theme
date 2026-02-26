@@ -1,49 +1,264 @@
-<section class="py-section">
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign condition = product.metafields.tcg.condition.value
+  assign set_name = product.metafields.tcg.set_name.value
+  assign set_symbol = product.metafields.tcg.set_symbol.value
+  assign rarity = product.metafields.tcg.rarity.value
+  assign card_number = product.metafields.tcg.card_number.value
+  assign release_date = product.metafields.tcg.release_date.value
+  assign language = product.metafields.tcg.language.value
+-%}
+
+<section class="py-section" {{ section.shopify_attributes }}>
   <div class="mx-auto max-w-content px-4">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      {%- comment -%} Product gallery — placeholder {%- endcomment -%}
-      <div>
-        {%- if product.featured_image -%}
-          <img
-            src="{{ product.featured_image | image_url: width: 800 }}"
-            alt="{{ product.featured_image.alt | default: product.title | escape }}"
-            width="800"
-            height="{{ 800 | divided_by: product.featured_image.aspect_ratio | round }}"
-            class="w-full rounded"
-            loading="eager"
-          >
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+
+      {%- comment -%} Product gallery {%- endcomment -%}
+      <tcg-product-gallery>
+        <div data-gallery-main class="rounded overflow-hidden bg-background">
+          {%- if product.featured_image -%}
+            <img
+              data-gallery-image
+              src="{{ product.featured_image | image_url: width: 800 }}"
+              alt="{{ product.featured_image.alt | default: product.title | escape }}"
+              width="800"
+              height="{{ 800 | divided_by: product.featured_image.aspect_ratio | round }}"
+              class="w-full object-contain"
+              loading="eager"
+            >
+          {%- endif -%}
+        </div>
+
+        {%- if product.images.size > 1 -%}
+          <div data-gallery-thumbs class="flex gap-2 mt-3 overflow-x-auto pb-2">
+            {%- for image in product.images -%}
+              <button
+                type="button"
+                data-thumb-index="{{ forloop.index0 }}"
+                data-full-src="{{ image | image_url: width: 800 }}"
+                class="flex-shrink-0 w-16 h-22 rounded overflow-hidden border border-border transition-all{% if forloop.first %} ring-2 ring-primary{% else %} opacity-50{% endif %}"
+                aria-label="View image {{ forloop.index }}"
+                aria-pressed="{{ forloop.first }}"
+              >
+                <img
+                  src="{{ image | image_url: width: 120 }}"
+                  alt="{{ image.alt | default: product.title | escape }}"
+                  width="64"
+                  height="90"
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                >
+              </button>
+            {%- endfor -%}
+          </div>
         {%- endif -%}
-      </div>
+      </tcg-product-gallery>
 
-      {%- comment -%} Product info — placeholder {%- endcomment -%}
+      {%- comment -%} Product info {%- endcomment -%}
       <div>
-        <h1 class="text-3xl font-heading font-bold text-text mb-2">{{ product.title }}</h1>
-        <p class="text-2xl text-primary mb-4">{{ product.price | money }}</p>
-        <div class="prose max-w-none mb-6">{{ product.description }}</div>
+        {%- if section.settings.show_vendor and product.vendor != blank -%}
+          <p class="text-xs font-bold text-text uppercase tracking-wide opacity-50 mb-1">{{ product.vendor }}</p>
+        {%- endif -%}
 
-        {%- form 'product', product -%}
-          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-          <button
-            type="submit"
-            class="w-full py-3 px-6 bg-primary text-white font-bold rounded hover:opacity-90 transition-opacity disabled:opacity-50"
-            {%- unless product.available %} disabled{% endunless -%}
-          >
-            {%- if product.available -%}
-              {{ 'products.add_to_cart' | t }}
-            {%- else -%}
-              {{ 'products.sold_out' | t }}
+        <h1 class="text-h3 font-heading font-bold text-text mb-3">{{ product.title }}</h1>
+
+        {%- comment -%} TCG metadata {%- endcomment -%}
+        {%- if set_name != blank or rarity != blank or card_number != blank -%}
+          <div class="flex flex-wrap items-center gap-2 mb-4">
+            {%- if set_name != blank -%}
+              <span class="badge">
+                {%- if set_symbol != blank -%}
+                  <img
+                    src="{{ set_symbol | image_url: width: 32 }}"
+                    alt="{{ set_name }}"
+                    width="16"
+                    height="16"
+                    class="inline-block mr-1"
+                    loading="lazy"
+                  >
+                {%- endif -%}
+                {{ set_name }}
+              </span>
             {%- endif -%}
-          </button>
+            {%- if rarity != blank -%}
+              <span class="badge">{{ rarity }}</span>
+            {%- endif -%}
+            {%- if settings.show_card_number and card_number != blank -%}
+              <span class="badge">#{{ card_number }}</span>
+            {%- endif -%}
+            {%- if language != blank and language != 'English' -%}
+              <span class="badge">{{ language }}</span>
+            {%- endif -%}
+            {%- if release_date != blank -%}
+              <span class="text-xs text-text opacity-40">{{ release_date }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Product form {%- endcomment -%}
+        {%- form 'product', product, data-product-form: '' -%}
+          {%- comment -%} Variant picker {%- endcomment -%}
+          {%- if product.has_only_default_variant -%}
+            <input type="hidden" name="id" value="{{ current_variant.id }}">
+            <div class="flex items-baseline gap-3 mb-6">
+              <span class="text-2xl font-bold text-primary">{{ current_variant.price | money }}</span>
+              {%- if current_variant.compare_at_price > current_variant.price -%}
+                <span class="text-lg text-text line-through opacity-40">{{ current_variant.compare_at_price | money }}</span>
+              {%- endif -%}
+            </div>
+          {%- else -%}
+            <tcg-variant-picker
+              data-variants="{{ product.variants | json | escape }}"
+              data-url="{{ product.url }}"
+            >
+              <input type="hidden" name="id" value="{{ current_variant.id }}">
+              <div data-option-container></div>
+              <div data-price class="flex items-baseline gap-3 mb-4">
+                <span class="text-2xl font-bold text-primary">{{ current_variant.price | money }}</span>
+                {%- if current_variant.compare_at_price > current_variant.price -%}
+                  <span class="text-lg text-text line-through opacity-40">{{ current_variant.compare_at_price | money }}</span>
+                {%- endif -%}
+              </div>
+              <div data-stock class="mb-4">
+                {%- unless current_variant.available -%}
+                  <span class="text-sm text-error font-bold">{{ 'products.sold_out' | t }}</span>
+                {%- endunless -%}
+              </div>
+            </tcg-variant-picker>
+          {%- endif -%}
+
+          {%- comment -%} Condition guide link {%- endcomment -%}
+          {%- if condition != blank -%}
+            <button
+              type="button"
+              class="text-xs text-primary hover:underline mb-4 inline-block"
+              data-condition-guide-trigger
+            >
+              {{ 'conditions.guide_title' | t }}
+            </button>
+          {%- endif -%}
+
+          {%- comment -%} Quantity + add to cart {%- endcomment -%}
+          <div class="flex gap-3 mb-6">
+            <tcg-quantity-input class="flex-shrink-0">
+              <div class="inline-flex items-center border border-border rounded">
+                <button
+                  type="button"
+                  data-action="decrease"
+                  class="px-3 py-2 text-text hover:text-primary transition-colors"
+                  aria-label="{{ 'accessibility.decrease_quantity' | t: title: product.title }}"
+                >&#8722;</button>
+                <input
+                  type="number"
+                  name="quantity"
+                  value="1"
+                  min="1"
+                  max="99"
+                  class="w-12 text-center bg-transparent border-none text-text"
+                  aria-label="{{ 'products.quantity' | t }}"
+                >
+                <button
+                  type="button"
+                  data-action="increase"
+                  class="px-3 py-2 text-text hover:text-primary transition-colors"
+                  aria-label="{{ 'accessibility.increase_quantity' | t: title: product.title }}"
+                >+</button>
+              </div>
+            </tcg-quantity-input>
+
+            <button
+              type="submit"
+              class="btn btn-primary btn-lg flex-1"
+              {%- unless current_variant.available %} disabled{% endunless -%}
+            >
+              {%- if current_variant.available -%}
+                {{ 'products.add_to_cart' | t }}
+              {%- else -%}
+                {{ 'products.sold_out' | t }}
+              {%- endif -%}
+            </button>
+          </div>
         {%- endform -%}
+
+        {%- comment -%} Product description {%- endcomment -%}
+        {%- if product.description != blank -%}
+          <div class="prose max-w-none">
+            {{ product.description }}
+          </div>
+        {%- endif -%}
       </div>
     </div>
   </div>
+
+  {%- comment -%} Sticky add-to-cart bar {%- endcomment -%}
+  {%- if section.settings.enable_sticky_atc -%}
+    <div
+      class="fixed bottom-0 left-0 right-0 bg-surface border-t border-border p-3 z-40 translate-y-full transition-transform"
+      data-sticky-atc
+    >
+      <div class="mx-auto max-w-content px-4 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3 min-w-0">
+          {%- if product.featured_image -%}
+            <img
+              src="{{ product.featured_image | image_url: width: 80 }}"
+              alt="{{ product.title | escape }}"
+              width="32"
+              height="45"
+              class="rounded card-aspect object-cover flex-shrink-0"
+              loading="lazy"
+            >
+          {%- endif -%}
+          <div class="min-w-0">
+            <p class="text-sm font-bold text-text truncate">{{ product.title }}</p>
+            <p class="text-sm text-primary font-bold">{{ current_variant.price | money }}</p>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="btn btn-primary btn-sm flex-shrink-0"
+          data-sticky-atc-btn
+          data-variant-id="{{ current_variant.id }}"
+          {%- unless current_variant.available %} disabled{% endunless -%}
+        >
+          {{ 'products.add_to_cart' | t }}
+        </button>
+      </div>
+    </div>
+  {%- endif -%}
 </section>
+
+{%- comment -%} Condition guide modal — only rendered on product pages {%- endcomment -%}
+{%- if condition != blank -%}
+  {%- render 'condition-guide' -%}
+{%- endif -%}
+
+{%- comment -%} Track recently viewed {%- endcomment -%}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (window.Foil && window.Foil._addRecentlyViewed) {
+      window.Foil._addRecentlyViewed('{{ product.handle | escape }}');
+    }
+  });
+</script>
 
 {% schema %}
 {
   "name": "Product main",
   "tag": "section",
-  "settings": []
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_atc",
+      "label": "Sticky add-to-cart bar",
+      "info": "Fixed bar at bottom of screen when main ATC button scrolls out of view",
+      "default": true
+    }
+  ]
 }
 {% endschema %}

@@ -1,0 +1,36 @@
+{
+  "sections": {
+    "main": {
+      "type": "contact-form",
+      "settings": {},
+      "blocks": {
+        "email": {
+          "type": "info_item",
+          "settings": {
+            "icon": "email",
+            "label": "Email",
+            "value": "info@yourstore.com"
+          }
+        },
+        "location": {
+          "type": "info_item",
+          "settings": {
+            "icon": "location",
+            "label": "Store",
+            "value": "123 Main St, Your City"
+          }
+        },
+        "hours": {
+          "type": "info_item",
+          "settings": {
+            "icon": "clock",
+            "label": "Hours",
+            "value": "Mon–Sat 11am–7pm, Sun 12–5pm"
+          }
+        }
+      },
+      "block_order": ["email", "location", "hours"]
+    }
+  },
+  "order": ["main"]
+}

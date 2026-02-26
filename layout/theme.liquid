@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+    {%- comment -%} Preconnect to Shopify CDN for faster asset loading {%- endcomment -%}
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
     <title>
       {%- if page_title -%}
         {{- page_title -}}
@@ -20,6 +23,23 @@
       <meta name="description" content="{{ page_description | escape }}">
     {%- endif -%}
 
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.favicon -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    {%- comment -%}
+      Font loading — load base weight + bold for both heading and body fonts.
+      font_modify returns nil if the weight doesn't exist in the font family,
+      so we guard with an if check.
+    {%- endcomment -%}
+    {%- liquid
+      assign font_heading_bold = settings.font_heading | font_modify: 'weight', 'bold'
+      assign font_body_bold = settings.font_body | font_modify: 'weight', 'bold'
+      assign font_body_italic = settings.font_body | font_modify: 'style', 'italic'
+    -%}
+
     {%- render 'vite-tag', entry: 'theme.css', preload_stylesheet: true -%}
 
     {{ content_for_header }}
@@ -27,8 +47,18 @@
     {%- style -%}
       {{ settings.font_heading | font_face: font_display: 'swap' }}
       {{ settings.font_body | font_face: font_display: 'swap' }}
+      {%- if font_heading_bold -%}
+        {{ font_heading_bold | font_face: font_display: 'swap' }}
+      {%- endif -%}
+      {%- if font_body_bold -%}
+        {{ font_body_bold | font_face: font_display: 'swap' }}
+      {%- endif -%}
+      {%- if font_body_italic -%}
+        {{ font_body_italic | font_face: font_display: 'swap' }}
+      {%- endif -%}
 
       :root {
+        /* Color tokens — dark mode defaults */
         --color-primary: {{ settings.color_primary }};
         --color-secondary: {{ settings.color_secondary }};
         --color-accent: {{ settings.color_accent }};
@@ -39,16 +69,75 @@
         --color-error: {{ settings.color_error }};
         --color-success: {{ settings.color_success }};
 
+        /* Typography tokens */
         --font-heading: {{ settings.font_heading.family }}, {{ settings.font_heading.fallback_families }};
+        --font-heading-weight: {{ settings.font_heading.weight }};
+        --font-heading-style: {{ settings.font_heading.style }};
         --font-body: {{ settings.font_body.family }}, {{ settings.font_body.fallback_families }};
+        --font-body-weight: {{ settings.font_body.weight }};
+        --font-body-style: {{ settings.font_body.style }};
         --font-size-base: {{ settings.font_size_base }}px;
         --heading-scale: {{ settings.heading_scale | divided_by: 100.0 }};
 
+        /* Heading type scale — each level multiplied by heading-scale.
+           Uses a modular scale: base * scale^n for each heading level. */
+        --font-size-h6: calc(var(--font-size-base) * var(--heading-scale));
+        --font-size-h5: calc(var(--font-size-base) * var(--heading-scale) * var(--heading-scale));
+        --font-size-h4: calc(var(--font-size-base) * var(--heading-scale) * var(--heading-scale) * var(--heading-scale));
+        --font-size-h3: calc(var(--font-size-base) * var(--heading-scale) * var(--heading-scale) * var(--heading-scale) * var(--heading-scale));
+        --font-size-h2: calc(var(--font-size-base) * var(--heading-scale) * var(--heading-scale) * var(--heading-scale) * var(--heading-scale) * var(--heading-scale));
+        --font-size-h1: calc(var(--font-size-base) * var(--heading-scale) * var(--heading-scale) * var(--heading-scale) * var(--heading-scale) * var(--heading-scale) * var(--heading-scale));
+
+        /* Layout tokens */
         --border-radius-base: {{ settings.border_radius_base }}px;
+        --border-radius-sm: calc({{ settings.border_radius_base }}px * 0.5);
+        --border-radius-lg: calc({{ settings.border_radius_base }}px * 1.5);
+        --border-radius-full: 9999px;
         --max-width: {{ settings.max_content_width }}px;
         --section-spacing: {{ settings.section_spacing }}px;
+
+        /* Header height — used for sticky offset calculations */
+        --header-height: 4rem;
+      }
+
+      /* Light mode overrides — driven by theme editor settings */
+      [data-theme="light"] {
+        --color-background: {{ settings.color_light_background }};
+        --color-surface: {{ settings.color_light_surface }};
+        --color-text: {{ settings.color_light_text }};
+        --color-border: {{ settings.color_light_border }};
       }
     {%- endstyle -%}
+
+    {%- comment -%}
+      Expose Liquid state to JS as a global — avoids fetching data that
+      Liquid already has. Web Components read from window.Foil instead of
+      making redundant API calls.
+    {%- endcomment -%}
+    <script>
+      window.Foil = {
+        routes: {
+          cart_url: '{{ routes.cart_url }}',
+          cart_add_url: '{{ routes.cart_add_url }}',
+          cart_change_url: '{{ routes.cart_change_url }}',
+          cart_update_url: '{{ routes.cart_update_url }}',
+          search_url: '{{ routes.search_url }}',
+          predictive_search_url: '{{ routes.predictive_search_url }}'
+        },
+        cart: {
+          item_count: {{ cart.item_count }},
+          total_price: {{ cart.total_price }}
+        },
+        settings: {
+          predictive_search: {{ settings.enable_predictive_search }},
+          dark_mode_toggle: {{ settings.enable_dark_mode_toggle }},
+          dark_mode_default: '{{ settings.dark_mode_default }}',
+          low_stock_threshold: {{ settings.low_stock_threshold }},
+          foil_shimmer: {{ settings.enable_foil_shimmer }}
+        },
+        money_format: {{ shop.money_format | json }}
+      };
+    </script>
   </head>
 
   <body class="font-body text-text bg-background antialiased">
@@ -56,6 +145,7 @@
       {{- 'accessibility.skip_to_content' | t -}}
     </a>
 
+    {%- section 'announcement-bar' -%}
     {%- section 'header' -%}
 
     <main id="main" role="main" tabindex="-1">
@@ -63,6 +153,35 @@
     </main>
 
     {%- section 'footer' -%}
+
+    {%- comment -%} Cart drawer mount point — Web Component renders here {%- endcomment -%}
+    <tcg-cart-drawer
+      class="fixed inset-0 z-50 pointer-events-none"
+      role="dialog"
+      aria-label="{{ 'accessibility.open_cart' | t }}"
+      aria-modal="true"
+      hidden
+      data-cart-title="{{ 'cart.title' | t | escape }}"
+      data-cart-empty="{{ 'cart.empty' | t | escape }}"
+      data-cart-subtotal="{{ 'cart.subtotal' | t | escape }}"
+      data-cart-checkout="{{ 'cart.checkout' | t | escape }}"
+      data-cart-continue-shopping="{{ 'cart.continue_shopping' | t | escape }}"
+      data-cart-taxes-note="{{ 'cart.taxes_note' | t | escape }}"
+      data-cart-remove="{{ 'cart.remove' | t | escape }}"
+      data-accessibility-close-cart="{{ 'accessibility.close_cart' | t | escape }}"
+    ></tcg-cart-drawer>
+
+    {%- comment -%} Search modal mount point — Web Component renders here {%- endcomment -%}
+    <tcg-search-modal
+      class="fixed inset-0 z-50"
+      role="dialog"
+      aria-label="{{ 'accessibility.open_search' | t }}"
+      aria-modal="true"
+      hidden
+      data-predictive="{{ settings.enable_predictive_search }}"
+      data-show-collections="{{ settings.search_show_collections }}"
+      data-show-pages="{{ settings.search_show_pages }}"
+    ></tcg-search-modal>
 
     {%- render 'vite-tag', entry: 'theme.js' -%}
   </body>

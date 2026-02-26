@@ -1,8 +1,41 @@
-<section class="py-section">
+{%- liquid
+  assign show_title = section.settings.show_title
+  assign show_banner = false
+  if section.settings.banner_image != blank
+    assign show_banner = true
+  endif
+-%}
+
+{%- if show_banner -%}
+  <div class="relative w-full overflow-hidden" style="min-height: 240px;">
+    <img
+      src="{{ section.settings.banner_image | image_url: width: 1600 }}"
+      alt="{{ page.title | escape }}"
+      width="1600"
+      height="400"
+      class="absolute inset-0 w-full h-full object-cover"
+      loading="eager"
+    >
+    <div class="absolute inset-0 bg-gradient-to-t from-background/90 to-background/30"></div>
+    {%- if show_title -%}
+      <div class="relative mx-auto max-w-content px-4 flex items-end h-full" style="min-height: 240px;">
+        <h1 class="text-h2 font-heading font-bold text-white mb-6">{{ page.title }}</h1>
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+<section class="py-section" {{ section.shopify_attributes }}>
   <div class="mx-auto max-w-content px-4">
-    <div class="prose max-w-none">
-      {{ page.content }}
-    </div>
+    {%- if show_title and show_banner == false -%}
+      <h1 class="text-h2 font-heading font-bold text-text mb-8">{{ page.title }}</h1>
+    {%- endif -%}
+
+    {%- if page.content != blank -%}
+      <div class="prose max-w-none">
+        {{ page.content }}
+      </div>
+    {%- endif -%}
   </div>
 </section>
 
@@ -10,6 +43,19 @@
 {
   "name": "Page content",
   "tag": "section",
-  "settings": []
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show page title",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner image",
+      "info": "Optional hero banner displayed above the page content"
+    }
+  ]
 }
 {% endschema %}

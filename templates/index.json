@@ -1,9 +1,31 @@
 {
   "sections": {
-    "main": {
-      "type": "page-content",
+    "hero": {
+      "type": "hero-banner",
+      "settings": {}
+    },
+    "game_selector": {
+      "type": "game-selector",
+      "settings": {}
+    },
+    "featured_collections": {
+      "type": "featured-collections",
+      "settings": {}
+    },
+    "featured_products": {
+      "type": "featured-products",
+      "settings": {}
+    },
+    "set_spotlight": {
+      "type": "set-spotlight",
       "settings": {}
     }
   },
-  "order": ["main"]
+  "order": [
+    "hero",
+    "game_selector",
+    "featured_collections",
+    "featured_products",
+    "set_spotlight"
+  ]
 }

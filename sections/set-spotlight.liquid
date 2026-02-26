@@ -1,0 +1,97 @@
+{%- liquid
+  assign heading = section.settings.heading
+  assign description = section.settings.description
+  assign image = section.settings.image
+  assign coll = section.settings.collection
+  assign release_date = section.settings.release_date
+  assign cta_label = section.settings.cta_label | default: 'Browse set'
+-%}
+
+<section class="py-section" {{ section.shopify_attributes }}>
+  <div class="mx-auto max-w-content px-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-surface border border-border rounded-lg overflow-hidden">
+      {%- comment -%} Image {%- endcomment -%}
+      <div class="relative">
+        {%- if image != blank -%}
+          <img
+            src="{{ image | image_url: width: 800 }}"
+            alt="{{ heading | default: 'Set spotlight' | escape }}"
+            width="800"
+            height="{{ 800 | divided_by: image.aspect_ratio | round }}"
+            class="w-full aspect-[4/3] object-cover"
+            loading="lazy"
+          >
+        {%- else -%}
+          <div class="w-full aspect-[4/3] bg-background flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="text-border" aria-hidden="true">
+              <rect width="18" height="18" x="3" y="3" rx="2"/><path d="m16 8-4 4-4-4"/>
+            </svg>
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Info {%- endcomment -%}
+      <div class="p-6 md:p-8">
+        {%- if release_date != blank -%}
+          <p class="text-xs text-accent font-bold uppercase tracking-wide mb-2">{{ release_date }}</p>
+        {%- endif -%}
+        {%- if heading != blank -%}
+          <h2 class="text-h3 font-heading font-bold text-text mb-3">{{ heading }}</h2>
+        {%- endif -%}
+        {%- if description != blank -%}
+          <div class="prose text-text opacity-70 mb-6">{{ description }}</div>
+        {%- endif -%}
+        {%- if coll != blank -%}
+          <a href="{{ coll.url }}" class="btn btn-primary">{{ cta_label }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Set spotlight",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Set name",
+      "default": "Latest Expansion"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Set image"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Set collection"
+    },
+    {
+      "type": "text",
+      "id": "release_date",
+      "label": "Release date",
+      "info": "e.g. February 2026"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label",
+      "default": "Browse set"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Set spotlight"
+    }
+  ]
+}
+{% endschema %}

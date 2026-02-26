@@ -1,48 +1,356 @@
-{%- paginate collection.products by 24 -%}
-  <section class="pb-section">
-    <div class="mx-auto max-w-content px-4">
-      <p class="text-sm text-text/50 mb-4">
-        {{ 'collections.results_count' | t: count: collection.products_count }}
-      </p>
+{%- liquid
+  assign products_per_page = section.settings.products_per_page | default: 24
+  assign default_layout = section.settings.default_layout | default: 'grid'
+-%}
 
-      {%- if collection.products.size > 0 -%}
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {%- for product in collection.products -%}
-            {%- render 'card-product', product: product -%}
-          {%- endfor -%}
+{%- paginate collection.products by products_per_page -%}
+  <section class="pb-section" {{ section.shopify_attributes }}>
+    <div class="mx-auto max-w-content px-4">
+
+      {%- comment -%} Toolbar: active filters, result count, sort, view toggle {%- endcomment -%}
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+        <div class="flex items-center gap-4">
+          {%- comment -%} Mobile filter toggle {%- endcomment -%}
+          <button
+            type="button"
+            class="lg:hidden btn btn-secondary btn-sm"
+            data-filter-toggle
+            aria-expanded="false"
+            aria-controls="collection-filters"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-1" aria-hidden="true">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+            </svg>
+            {{ 'collections.filter' | t }}
+          </button>
+
+          <p class="text-sm text-text opacity-50">
+            {{ 'collections.results_count' | t: count: collection.products_count }}
+          </p>
         </div>
 
-        {%- if paginate.pages > 1 -%}
-          <nav class="flex justify-center gap-2 mt-8" aria-label="Pagination">
-            {%- if paginate.previous -%}
-              <a href="{{ paginate.previous.url }}" class="px-4 py-2 border border-border rounded text-sm text-text hover:bg-surface transition-colors">
-                {{ 'general.pagination.previous' | t }}
-              </a>
-            {%- endif -%}
-            {%- for part in paginate.parts -%}
-              {%- if part.is_link -%}
-                <a href="{{ part.url }}" class="px-3 py-2 border border-border rounded text-sm text-text hover:bg-surface transition-colors">
-                  {{ part.title }}
-                </a>
-              {%- else -%}
-                <span class="px-3 py-2 bg-primary text-white rounded text-sm">
-                  {{ part.title }}
-                </span>
-              {%- endif -%}
+        <div class="flex items-center gap-3">
+          {%- comment -%} Sort dropdown {%- endcomment -%}
+          <form method="get" data-sort-form class="flex items-center gap-2">
+            {%- comment -%} Preserve existing filter params {%- endcomment -%}
+            {%- for filter in collection.filters -%}
+              {%- for value in filter.active_values -%}
+                <input type="hidden" name="{{ filter.param_name }}" value="{{ value.value }}">
+              {%- endfor -%}
             {%- endfor -%}
-            {%- if paginate.next -%}
-              <a href="{{ paginate.next.url }}" class="px-4 py-2 border border-border rounded text-sm text-text hover:bg-surface transition-colors">
-                {{ 'general.pagination.next' | t }}
-              </a>
-            {%- endif -%}
-          </nav>
+
+            <label for="sort-by" class="text-sm text-text opacity-50 whitespace-nowrap">{{ 'collections.sort_by' | t }}</label>
+            <select
+              id="sort-by"
+              name="sort_by"
+              class="text-sm bg-surface border border-border rounded px-3 py-1.5 text-text focus:border-primary focus:outline-none"
+              onchange="this.form.submit()"
+            >
+              {%- for option in collection.sort_options -%}
+                <option
+                  value="{{ option.value }}"
+                  {%- if collection.sort_by == option.value %} selected{% endif -%}
+                >
+                  {{ option.name }}
+                </option>
+              {%- endfor -%}
+            </select>
+          </form>
+
+          {%- comment -%} View toggle {%- endcomment -%}
+          <div class="hidden sm:flex items-center border border-border rounded overflow-hidden">
+            <button
+              type="button"
+              class="p-1.5 transition-colors"
+              data-view="grid"
+              aria-label="{{ 'collections.grid_view' | t }}"
+              aria-pressed="true"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/>
+              </svg>
+            </button>
+            <button
+              type="button"
+              class="p-1.5 transition-colors opacity-40"
+              data-view="list"
+              aria-label="{{ 'collections.list_view' | t }}"
+              aria-pressed="false"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {%- comment -%} Active filter chips {%- endcomment -%}
+      {%- assign has_active_filters = false -%}
+      {%- for filter in collection.filters -%}
+        {%- if filter.active_values.size > 0 -%}
+          {%- assign has_active_filters = true -%}
+          {%- break -%}
         {%- endif -%}
-      {%- else -%}
-        <p class="text-text/50">{{ 'collections.no_results' | t }}</p>
+      {%- endfor -%}
+
+      {%- if has_active_filters -%}
+        <div class="flex flex-wrap items-center gap-2 mb-4">
+          {%- for filter in collection.filters -%}
+            {%- for value in filter.active_values -%}
+              <a
+                href="{{ value.url_to_remove }}"
+                class="inline-flex items-center gap-1 badge hover:bg-error hover:text-white transition-colors"
+              >
+                {{ value.label }}
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+                </svg>
+              </a>
+            {%- endfor -%}
+          {%- endfor -%}
+          <a href="{{ collection.url }}" class="text-xs text-primary hover:underline">
+            {{ 'collections.clear_filters' | t }}
+          </a>
+        </div>
       {%- endif -%}
+
+      {%- comment -%} Main layout: sidebar + grid {%- endcomment -%}
+      <div class="flex gap-8">
+
+        {%- comment -%} Filter sidebar {%- endcomment -%}
+        {%- if collection.filters.size > 0 -%}
+          <aside
+            id="collection-filters"
+            class="hidden lg:block w-60 flex-shrink-0"
+            data-filter-sidebar
+          >
+            <form method="get" data-filter-form>
+              {%- comment -%} Preserve sort param {%- endcomment -%}
+              {%- if collection.sort_by != blank -%}
+                <input type="hidden" name="sort_by" value="{{ collection.sort_by }}">
+              {%- endif -%}
+
+              {%- for filter in collection.filters -%}
+                <details class="border-b border-border pb-4 mb-4" open>
+                  <summary class="flex items-center justify-between cursor-pointer text-sm font-bold text-text mb-3 select-none">
+                    {{ filter.label }}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="transition-transform" aria-hidden="true">
+                      <path d="m6 9 6 6 6-6"/>
+                    </svg>
+                  </summary>
+
+                  {%- case filter.type -%}
+                    {%- when 'list' -%}
+                      <div class="space-y-2 max-h-48 overflow-y-auto">
+                        {%- for value in filter.values -%}
+                          <label class="flex items-center gap-2 text-sm text-text cursor-pointer hover:text-primary transition-colors{% if value.count == 0 and value.active == false %} opacity-30{% endif %}">
+                            <input
+                              type="checkbox"
+                              name="{{ filter.param_name }}"
+                              value="{{ value.value }}"
+                              {%- if value.active %} checked{% endif -%}
+                              {%- if value.count == 0 and value.active == false %} disabled{% endif -%}
+                              class="rounded border-border text-primary focus:ring-primary"
+                              onchange="this.form.submit()"
+                            >
+                            <span class="flex-1">{{ value.label }}</span>
+                            <span class="text-xs opacity-40">({{ value.count }})</span>
+                          </label>
+                        {%- endfor -%}
+                      </div>
+
+                    {%- when 'price_range' -%}
+                      <div class="flex items-center gap-2">
+                        <input
+                          type="number"
+                          name="{{ filter.min_value.param_name }}"
+                          value="{{ filter.min_value.value }}"
+                          placeholder="{{ filter.range_min | money_without_currency }}"
+                          min="{{ filter.range_min | money_without_currency }}"
+                          max="{{ filter.range_max | money_without_currency }}"
+                          class="w-full px-2 py-1 text-sm bg-background border border-border rounded text-text"
+                        >
+                        <span class="text-text opacity-40">-</span>
+                        <input
+                          type="number"
+                          name="{{ filter.max_value.param_name }}"
+                          value="{{ filter.max_value.value }}"
+                          placeholder="{{ filter.range_max | money_without_currency }}"
+                          min="{{ filter.range_min | money_without_currency }}"
+                          max="{{ filter.range_max | money_without_currency }}"
+                          class="w-full px-2 py-1 text-sm bg-background border border-border rounded text-text"
+                        >
+                        <button type="submit" class="btn btn-sm btn-primary">Go</button>
+                      </div>
+                  {%- endcase -%}
+                </details>
+              {%- endfor -%}
+            </form>
+          </aside>
+        {%- endif -%}
+
+        {%- comment -%} Product grid/list {%- endcomment -%}
+        <div class="flex-1 min-w-0">
+          {%- if collection.products.size > 0 -%}
+            {%- comment -%} Grid view (default) {%- endcomment -%}
+            <div
+              data-product-grid
+              class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"
+            >
+              {%- for product in collection.products -%}
+                {%- render 'card-product', product: product -%}
+              {%- endfor -%}
+            </div>
+
+            {%- comment -%} Pagination {%- endcomment -%}
+            {%- if paginate.pages > 1 -%}
+              <nav class="flex justify-center gap-2 mt-8" aria-label="Pagination">
+                {%- if paginate.previous -%}
+                  <a href="{{ paginate.previous.url }}" class="px-4 py-2 border border-border rounded text-sm text-text hover:bg-surface transition-colors">
+                    {{ 'general.pagination.previous' | t }}
+                  </a>
+                {%- endif -%}
+                {%- for part in paginate.parts -%}
+                  {%- if part.is_link -%}
+                    <a href="{{ part.url }}" class="px-3 py-2 border border-border rounded text-sm text-text hover:bg-surface transition-colors">
+                      {{ part.title }}
+                    </a>
+                  {%- else -%}
+                    <span class="px-3 py-2 bg-primary text-white rounded text-sm">
+                      {{ part.title }}
+                    </span>
+                  {%- endif -%}
+                {%- endfor -%}
+                {%- if paginate.next -%}
+                  <a href="{{ paginate.next.url }}" class="px-4 py-2 border border-border rounded text-sm text-text hover:bg-surface transition-colors">
+                    {{ 'general.pagination.next' | t }}
+                  </a>
+                {%- endif -%}
+              </nav>
+            {%- endif -%}
+
+          {%- else -%}
+            {%- comment -%} Empty state {%- endcomment -%}
+            <div class="text-center py-16">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="mx-auto text-border mb-4" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+              </svg>
+              <p class="text-text opacity-50 mb-1">{{ 'collections.no_results' | t }}</p>
+              <p class="text-sm text-text opacity-30">{{ 'collections.no_results_hint' | t }}</p>
+              {%- if has_active_filters -%}
+                <a href="{{ collection.url }}" class="btn btn-secondary btn-sm mt-4">
+                  {{ 'collections.clear_filters' | t }}
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
     </div>
   </section>
 {%- endpaginate -%}
+
+{%- comment -%} Mobile filter drawer overlay {%- endcomment -%}
+<div class="fixed inset-0 z-50 hidden" data-filter-drawer>
+  <div class="fixed inset-0 bg-black/60" data-filter-drawer-backdrop></div>
+  <div class="fixed top-0 left-0 bottom-0 w-80 max-w-[85vw] bg-surface border-r border-border flex flex-col overflow-y-auto">
+    <div class="flex items-center justify-between p-4 border-b border-border sticky top-0 bg-surface z-10">
+      <span class="font-heading font-bold text-text">{{ 'collections.filter' | t }}</span>
+      <button type="button" class="text-text hover:text-primary" data-filter-drawer-close>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+        </svg>
+      </button>
+    </div>
+    <div class="p-4" data-filter-drawer-content>
+      {%- comment -%} Filters are cloned here by JS from the sidebar {%- endcomment -%}
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    /* View toggle */
+    const gridEl = document.querySelector('[data-product-grid]');
+    const viewBtns = document.querySelectorAll('[data-view]');
+    viewBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const view = btn.dataset.view;
+        viewBtns.forEach(function(b) {
+          b.classList.toggle('opacity-40', b.dataset.view !== view);
+          b.setAttribute('aria-pressed', b.dataset.view === view);
+        });
+        if (gridEl) {
+          if (view === 'list') {
+            gridEl.className = 'space-y-3';
+            gridEl.querySelectorAll(':scope > div').forEach(function(card) {
+              card.classList.add('flex', 'flex-row', 'items-start');
+            });
+          } else {
+            gridEl.className = 'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4';
+            gridEl.querySelectorAll(':scope > div').forEach(function(card) {
+              card.classList.remove('flex', 'flex-row', 'items-start');
+            });
+          }
+        }
+      });
+    });
+
+    /* Mobile filter drawer */
+    var filterToggle = document.querySelector('[data-filter-toggle]');
+    var filterDrawer = document.querySelector('[data-filter-drawer]');
+    var filterClose = document.querySelector('[data-filter-drawer-close]');
+    var filterBackdrop = document.querySelector('[data-filter-drawer-backdrop]');
+    var filterContent = document.querySelector('[data-filter-drawer-content]');
+    var sidebar = document.querySelector('[data-filter-sidebar]');
+
+    function openFilters() {
+      if (filterDrawer && sidebar && filterContent) {
+        filterContent.innerHTML = sidebar.innerHTML;
+        filterDrawer.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+    function closeFilters() {
+      if (filterDrawer) {
+        filterDrawer.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    }
+
+    if (filterToggle) filterToggle.addEventListener('click', openFilters);
+    if (filterClose) filterClose.addEventListener('click', closeFilters);
+    if (filterBackdrop) filterBackdrop.addEventListener('click', closeFilters);
+
+    /* Quick-add handler for product cards */
+    document.querySelectorAll('[data-quick-add]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var id = btn.dataset.variantId;
+        if (!id) return;
+        btn.disabled = true;
+        btn.textContent = 'Adding...';
+        fetch(window.Foil.routes.cart_add_url + '.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ items: [{ id: parseInt(id, 10), quantity: 1 }] })
+        })
+        .then(function() { return fetch(window.Foil.routes.cart_url + '.js'); })
+        .then(function(r) { return r.json(); })
+        .then(function(cart) {
+          document.dispatchEvent(new CustomEvent('cart:updated', { detail: cart }));
+          document.dispatchEvent(new CustomEvent('cart:open'));
+          btn.disabled = false;
+          btn.textContent = 'Add to cart';
+        })
+        .catch(function() {
+          btn.disabled = false;
+          btn.textContent = 'Add to cart';
+        });
+      });
+    });
+  })();
+</script>
 
 {% schema %}
 {
@@ -57,6 +365,16 @@
       "max": 48,
       "step": 4,
       "default": 24
+    },
+    {
+      "type": "select",
+      "id": "default_layout",
+      "label": "Default layout",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "list", "label": "List" }
+      ],
+      "default": "grid"
     }
   ]
 }
